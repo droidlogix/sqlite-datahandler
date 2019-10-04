@@ -11,7 +11,7 @@ import java.util.Map;
  * Created by mrprintedwall on 11/02/17.
  */
 
-public interface ISqliteRepository<T>
+public interface ISqliteRepository
 {
 	//region CONNECTION
 
@@ -62,7 +62,7 @@ public interface ISqliteRepository<T>
 	 * @return
 	 * @throws SQLException
 	 */
-	T getSingle(String sql, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException;
+	<T> T getSingle(String sql, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException;
 
 	/**
 	 * Query a single item using sql and map of parameters. Convert resultset to POJO via dependency injection
@@ -72,7 +72,7 @@ public interface ISqliteRepository<T>
 	 * @return
 	 * @throws SQLException
 	 */
-	T getSingle(String sql, Map<Integer, Object> parameters, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException;
+	<T> T getSingle(String sql, Map<Integer, Object> parameters, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException;
 
 	/**
 	 * Query a list items using sql. Convert resultset to POJO via dependency injection
@@ -92,7 +92,7 @@ public interface ISqliteRepository<T>
 	 * @return
 	 * @throws SQLException
 	 */
-	List<T> getList(String sql, Map<Integer, Object> parameters, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException;
+	<T> List<T> getList(String sql, Map<Integer, Object> parameters, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException;
 
 	//endregion
 

@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by John Pili on 11/02/17.
  */
 
-public class SqliteRepository<T> implements ISqliteRepository<T>
+public class SqliteRepository implements ISqliteRepository
 {
 	private static final Logger logger = LoggerFactory.getLogger(SqliteRepository.class);
 
@@ -78,7 +78,7 @@ public class SqliteRepository<T> implements ISqliteRepository<T>
 	}
 
 	@Override
-	public T getSingle(String sql, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException
+	public <T> T getSingle(String sql, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException
 	{
 		try (Connection connection = getConnection())
 		{
@@ -95,7 +95,7 @@ public class SqliteRepository<T> implements ISqliteRepository<T>
 	}
 
 	@Override
-	public T getSingle(String sql, Map<Integer, Object> parameters, ISqliteObjectAssembler sqliteObjectAssembler)
+	public <T> T getSingle(String sql, Map<Integer, Object> parameters, ISqliteObjectAssembler sqliteObjectAssembler)
 			throws SQLException, SqliteDriverNotFoundException
 	{
 		try (Connection connection = getConnection())
@@ -117,7 +117,7 @@ public class SqliteRepository<T> implements ISqliteRepository<T>
 	}
 
 	@Override
-	public List<T> getList(String sql, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException
+	public <T> List<T> getList(String sql, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException
 	{
 		try (Connection connection = getConnection())
 		{
@@ -130,7 +130,7 @@ public class SqliteRepository<T> implements ISqliteRepository<T>
 	}
 
 	@Override
-	public List<T> getList(String sql, Map<Integer, Object> parameters,
+	public <T> List<T> getList(String sql, Map<Integer, Object> parameters,
 	                           ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException, SqliteDriverNotFoundException
 	{
 		try (Connection connection = getConnection())
@@ -265,7 +265,7 @@ public class SqliteRepository<T> implements ISqliteRepository<T>
 	 * @return
 	 * @throws SQLException
 	 */
-	private List<T> executeListQuery(ResultSet resultSet, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException
+	private <T> List<T> executeListQuery(ResultSet resultSet, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException
 	{
 		List<T> results = new ArrayList<>();
 		while (resultSet.next())
