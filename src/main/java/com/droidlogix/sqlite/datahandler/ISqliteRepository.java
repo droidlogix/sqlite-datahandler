@@ -23,6 +23,15 @@ public interface ISqliteRepository
 	 */
 	Connection getConnection() throws SQLException, SqliteDriverNotFoundException;
 
+	/**
+	 * This method initialize the SQLite connection and driver check
+	 * @param pragmaFk
+	 * @return
+	 * @throws SQLException
+	 * @throws SqliteDriverNotFoundException
+	 */
+	Connection getConnection(boolean pragmaFk) throws SQLException, SqliteDriverNotFoundException;
+
 	//endregion
 
 	//region ROW METHODS

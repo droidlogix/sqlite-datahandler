@@ -49,6 +49,25 @@ public class SqliteRepository implements ISqliteRepository
 	}
 
 	@Override
+	public Connection getConnection(boolean pragmaFk) throws SQLException, SqliteDriverNotFoundException
+	{
+		try
+		{
+			Class.forName("org.sqlite.JDBC");
+			Connection connection = DriverManager.getConnection(sqliteConfig.getDbLocation());
+			try (PreparedStatement preparedStatement = connection.prepareStatement((pragmaFk ? "PRAGMA foreign_keys=true" : "PRAGMA foreign_keys=false")))
+			{
+				preparedStatement.execute();
+			}
+			return connection;
+		}
+		catch (ClassNotFoundException classNotFoundException)
+		{
+			throw new SqliteDriverNotFoundException("Cannot load org.sqlite.JDBC driver");
+		}
+	}
+
+	@Override
 	public int insert(String sql, Map<Integer, Object> parameters) throws SQLException, SqliteDriverNotFoundException
 	{
 		try (Connection connection = getConnection())
@@ -173,10 +192,10 @@ public class SqliteRepository implements ISqliteRepository
 	 */
 	private void tableSqlExecutor(String sql) throws SQLException, SqliteDriverNotFoundException
 	{
-		try (Connection connection = getConnection())
+		try (Connection connection = getConnection(false))
 		{
 			Statement statement = connection.createStatement();
-			statement.execute(sql);
+			statement.executeUpdate(sql);
 		}
 	}
 
@@ -265,6 +284,7 @@ public class SqliteRepository implements ISqliteRepository
 	 * @return
 	 * @throws SQLException
 	 */
+	@SuppressWarnings("unchecked")
 	private <T> List<T> executeListQuery(ResultSet resultSet, ISqliteObjectAssembler sqliteObjectAssembler) throws SQLException
 	{
 		List<T> results = new ArrayList<>();
